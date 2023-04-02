@@ -117,9 +117,8 @@ class Table:
             print("Winner: " + self.winnerFinal.__str__())
             print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
-    # This is the main statement, and runs a round of the game.
-    def play(self):
-        winners = []
+    # This function manages the initial deal of cards to begin the round
+    def dealCards(self):
         # Deal Cards
 
         # Deal 1 face up to all
@@ -139,6 +138,11 @@ class Table:
                 self.checkWinners()
                 self.clearHands()
                 return
+
+    # This is the main statement, and runs a round of the game.
+    def play(self):
+        winners = []
+        self.dealCards()
 
         # Cycle through player turns
         turnOrder = 1
