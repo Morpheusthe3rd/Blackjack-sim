@@ -137,12 +137,14 @@ class Table:
             if e.handValue[0] == 21 or e.handValue[1] == 21:
                 self.checkWinners()
                 self.clearHands()
-                return
+                return 3
 
     # This is the main statement, and runs a round of the game.
     def play(self):
         winners = []
-        self.dealCards()
+        tmp = self.dealCards()  # This serves to check if there was a natural 21 dealt
+        if tmp == 3:
+            return
 
         # Cycle through player turns
         turnOrder = 1
