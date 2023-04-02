@@ -8,20 +8,19 @@ class Table:
 
     def __init__(self, playerCount, deckCount):
         self.uberDeck = Uberdeck.Uberdeck(deckCount) # Blackjack is typically played with 6 decks
-        self.playerCount = playerCount
-        self.playerList = []
-        self.playerList.append(Player.Player()) # The last position on the player list will be the dealer
-        self.winners = [[None, None]]*(self.playerCount+1)
+        self.playerCount = playerCount               # Players are unlimited
+        self.playerList = []                         #
+        self.playerList.append(Player.Player())      # The last position on the player list will be the dealer
+        self.winners = [[None, None]]*(self.playerCount+1) # This list is used for tracking victor calculations
+        self.winnerFinal = []                              # This is where the winner is stored
 
-        self.winnerFinal = []
-        # print("winners.len = " + len(self.winners).__str__())
+        # populate the player list with Player objects
         for e in range(0,playerCount):
             self.playerList.append(Player.Player())
 
-        # print(self.playerList)
-
+    # This function reveals all cards of all players, including the dealer
     def printHands(self):
-        print("---OPEN")
+        print("---")
         loopCounter = 1
         for e in self.playerList:
             if loopCounter <= self.playerCount:
@@ -33,7 +32,7 @@ class Table:
 
     # This function will be used to hide the dealers second card until their turn
     def printHandsClosed(self):
-        print("---CLOSED")
+        print("---")
         loopCounter = 1
         for e in self.playerList:
             if loopCounter <= self.playerCount:
@@ -43,6 +42,7 @@ class Table:
                 print("Dealer hand: " + str(e.hand[0]) + " [] ")
         print("---")
 
+    # This function runs at the end of each round to reset variables for the next
     def clearHands(self):
         print("Round over. Press 'Enter' to collect hands and re-deal.")
         input()
@@ -51,72 +51,59 @@ class Table:
         self.winnerFinal = []
         self.winners = [[None, None]]*(self.playerCount+1)
 
+    # This function iterates through the players to calculate and display final scores.
     def checkWinners(self):
-        # This statement checks winners
-        print()  # Newline
-        cycleCount = 1
-        for e in self.playerList:
-            if cycleCount <= self.playerCount:
-                # Select highest hand value < 22
+
+        print()  # Newline for CLI cleanliness
+        cycleCount = 1 # This counts the number of cycles the loop goes through, and stands in for Player number.
+
+        # This loop determines and prints everyone's playable score, or if they busted.
+        for e in self.playerList:               # This operates on all players, including dealer
+
+            if cycleCount <= self.playerCount:  # This checks that we are dealing with a player
+
+                # This if-elif-else block checks the 2 hand values for <= 21. If neither are, this posts a bust message
+                # It also populates the 'winners' list, with the player number and their hand value
                 if e.handValue[1] <= 21:
-                    try:
-                        print("Player " + cycleCount.__str__() + " total: " + e.handValue[1].__str__())
-                        self.winners[cycleCount - 1] = [e.handValue[1], "Player " + cycleCount.__str__()]
-                    except(IndexError):
-                        print("\n===DIAGNOSTIC ERROR Lines 61-62===\n")
-                        print("Index out of bounds: cycleCount = " + str(cycleCount) + " Acceptable range: [0," +
-                              len(self.winners).__str__() +"]")
+                    print("Player " + cycleCount.__str__() + " total: " + e.handValue[1].__str__())
+                    self.winners[cycleCount - 1] = [e.handValue[1], "Player " + cycleCount.__str__()]
                 elif e.handValue[0] <= 21:
-                    try:
-                        print("Player " + cycleCount.__str__() + " total: " + e.handValue[0].__str__())
-                        self.winners[cycleCount - 1] = [e.handValue[0], "Player " + cycleCount.__str__()]
-                    except(IndexError):
-                        print("\n===DIAGNOSTIC ERROR Lines 69-70===\n")
-                        print("Index out of bounds: cycleCount = " + str(cycleCount) + " Acceptable range: [0," +
-                              len(self.winners).__str__() +"]")
+                    print("Player " + cycleCount.__str__() + " total: " + e.handValue[0].__str__())
+                    self.winners[cycleCount - 1] = [e.handValue[0], "Player " + cycleCount.__str__()]
                 else:
                     print("Player " + cycleCount.__str__() + " busted!")
             else:
                 if e.handValue[1] <= 21:
-                    try:
-                        print("Dealer total: " + e.handValue[1].__str__())
-                        self.winners[cycleCount - 1] = [e.handValue[1], "Dealer"]
-                    except(IndexError):
-                        print("\n===DIAGNOSTIC ERROR Lines 80-81===\n")
-                        print("Index out of bounds: cycleCount = " + str(cycleCount) + " Acceptable range: [0," +
-                              len(self.winners).__str__() + "]")
+                    print("Dealer total: " + e.handValue[1].__str__())
+                    self.winners[cycleCount - 1] = [e.handValue[1], "Dealer"]
                 elif e.handValue[0] <= 21:
-                    try:
-                        print("Dealer total: " + e.handValue[0].__str__())
-                        self.winners[cycleCount - 1] = [e.handValue[0], "Dealer"]
-                    except(IndexError):
-                        print("\n===DIAGNOSTIC ERROR Lines 88-89===\n")
-                        print("Index out of bounds: cycleCount = " + str(cycleCount) + " Acceptable range: [0," +
-                              len(self.winners).__str__() + "]")
+                    print("Dealer total: " + e.handValue[0].__str__())
+                    self.winners[cycleCount - 1] = [e.handValue[0], "Dealer"]
                 else:
                     print("Dealer busted!")
             cycleCount += 1
 
-        # print(self.winners)
-        highestTotal = 0
-        NoneType = type(None)
+        # This section calculates the winner, reducing the list to 1 (or 2 in case of a tie)
+
+        highestTotal = 0        # tracking variable
+        NoneType = type(None)   # comparison variable for detecting busted players (which are [None, None])
 
         for i in self.winners:
-            newTestValue = i[0]
-            if type(newTestValue) == NoneType:
+            newTestValue = i[0] # for comparison to highestTotal
+            if type(newTestValue) == NoneType:      # Will pass if current player busted
                 pass
             else:
-                if newTestValue == highestTotal:
-                    # handle a tie
+                if newTestValue == highestTotal:    # This section handles a tie
                     self.winnerFinal.append(i)
                     highestTotal = newTestValue
-                elif newTestValue > highestTotal:
+                elif newTestValue > highestTotal:   # This determines if the new player did better than the last one
                     self.winnerFinal = []
                     self.winnerFinal.append(i)
                     highestTotal = newTestValue
-                else:
+                else:                               # This is the case that the previous player had a higher total
                     pass
-        # print("Winner list: " + self.winnerFinal.__str__())
+
+        # The final print for the victor.
         if len(self.winnerFinal) == 0:
             print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
             print("All players Busted, no winners")
@@ -130,72 +117,66 @@ class Table:
             print("Winner: " + self.winnerFinal.__str__())
             print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
+    # This is the main statement, and runs a round of the game.
     def play(self):
         winners = []
         # Deal Cards
-            # Deal 1 face up to all
+
+        # Deal 1 face up to all
         for e in self.playerList:
             e.hand.append(self.uberDeck.dealOne())
             e.calculateHandValue()
-            # Deal 1 face up to players, face down to dealer
-        # self.printHands()
+
+        # Deal 1 face up to players, face down to dealer
         for e in self.playerList:
             e.hand.append(self.uberDeck.dealOne())
             e.calculateHandValue()
         self.printHandsClosed()
 
-        # Check for Natural 21s
-        cycleCount = 1
+        # Check for Natural 21s. If any player (or dealer) starts with an Ace and Face, the round immediately ends.
         for e in self.playerList:
             if e.handValue[0] == 21 or e.handValue[1] == 21:
-                # Flag winner
-                winners.append(cycleCount)
-                break
-            cycleCount += 1
-
-        # self.printHands()
-
-        if winners != []:
-
-            self.printHands()
-
-            if cycleCount <= self.playerCount+1:
-                print("Congradulations Player: " + winners.__str__())
-            else:
-                print("The Dealer won!")
-            self.clearHands()
-            return winners
+                self.checkWinners()
+                self.clearHands()
+                return
 
         # Cycle through player turns
         turnOrder = 1
         for e in self.playerList:
             # This statement determines if a "player" is acting, rather than the dealer.
             if turnOrder <= self.playerCount:
-                playerinput = ''
+                playerinput = ''                        # resets player input
+
+                # This loop represents a single players turn. Player input is received in the middle of the loop, after
+                # initial checks.
                 while playerinput.lower() != "stand":
-                    if playerinput.lower() == "quit" or playerinput.lower() == "q":
+
+                    if playerinput.lower() == "quit" or playerinput.lower() == "q": # exit case
                         print("Quitting game")
                         raise EnvironmentError("Game over")
-                    elif e.handValue[0] > 21: # This statement checks if the current player has gone over 21.
-                        print("You've gone too far this time!")
+                    elif e.handValue[0] > 21:           # This statement checks if the current player has gone over 21.
+                        print("You've gone too far this time! You're busted.") # Bust statement
                         break
 
-                    playerinput = input("Would you like to stand or hit? >> ")
+                    playerinput = input("Would you like to stand or hit? >> ")  # Any input besides hit goes to the top
+                                                                                # of the next loop.
                     if playerinput.lower() == "hit":
-                        tmp = self.uberDeck.dealOne()
-                        input("You drew: " + tmp.__str__())
-                        e.hand.append(tmp)
-                        e.calculateHandValue()
-                    self.printHandsClosed()
+                        tmp = self.uberDeck.dealOne()           # Draws a card
+                        input("You drew: " + tmp.__str__())     # Shows card, requires Enter to progress
+                        e.hand.append(tmp)                      # Adds card to hand
+                        e.calculateHandValue()                  # Recalculates hand value
+                    self.printHandsClosed()                     # Prints current hand
 
                 print("Player " + turnOrder.__str__() + " is finished.")
                 turnOrder += 1
-            # This statement handles the Dealers play
+
+            # This statement handles the Dealers play. Dealer has automated rules.
             else:
                 self.printHands()
-                # This first loop will handle the generic case, drawing for the dealer if the highest total
+                # This first loop will handle the generic case, drawing for the dealer if the highest total < 17
                 while e.handValue[1] < 17:
                     tmp = self.uberDeck.dealOne()
+                    # Dealer draws also require manual check, to improve readability
                     input("Dealer drew: " + tmp.__str__())
                     e.hand.append(tmp)
                     e.calculateHandValue()
@@ -203,6 +184,7 @@ class Table:
                 if e.handValue[0] < 17 and e.handValue[1] > 21:
                     while e.handValue[0] < 17:
                         tmp = self.uberDeck.dealOne()
+                        # Dealer draws also require manual check, to improve readability
                         input("Dealer drew: " + tmp.__str__())
                         e.hand.append(tmp)
                         e.calculateHandValue()
@@ -214,14 +196,17 @@ class Table:
 
 if __name__ == "__main__":
 
-    sys.argv
-    while 1:
-        test = Table(int(sys.argv[1]), 6)
-        test.uberDeck.fullShuffle()
+    while 1:                                    # This loop will handle multiple games
+        test = Table(int(sys.argv[1]), 6)       # This creates the Table
+        test.uberDeck.fullShuffle()             # This shuffles the deck
+
+        # This loop will run rounds of the game until the deck needs to be reshuffled.
         while len(test.uberDeck.uberDeck) > test.uberDeck.cutPoint:
             test.play()
+
         print("Deck needs to be reshuffled.")
         input = input("Play again?(y/n) >> ")
+
         if input == "n":
             print("Quitting game")
             raise EnvironmentError("Game over")

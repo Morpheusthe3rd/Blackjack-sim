@@ -1,6 +1,10 @@
 Hello and welcome! This simulation of Blackjack operates through the command line, and allows for unlimited player
 count.
 
+Ahead of time, ensure that your system has at least Python 3.9 installed. If you need assistance, please reference the
+python website: https://www.python.org/downloads/
+This project does not require any external files or modules.
+
 In order to run, please download this zip and un-zip in your location of choice. Next, navigate to the folder location
 in your command-line and run the command: "python Table.py X", where X is the number of players you want!
 
@@ -28,3 +32,6 @@ Follow the next prompt to begin the next round.
 
 Once you have played enough rounds, the deck will need to be re-shuffled. At this point, you will get the option to
 quit, or play more.
+
+NOTES:
+1. This system makes use of errors to quickly quit the game, do not fear if quitting causes an error to appear.
