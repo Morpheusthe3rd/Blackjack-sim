@@ -24,6 +24,7 @@ class Player:
                 self.handValue[1] += e.value[0]
                 # print(self.handValue)
 
+# This main function was used for testing to validated functions
 if __name__ == "__main__":
     testPlayer = Player()
     testDeck = Deck.Deck()

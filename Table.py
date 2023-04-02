@@ -173,6 +173,7 @@ class Table:
             # This statement handles the Dealers play. Dealer has automated rules.
             else:
                 self.printHands()
+
                 # This first loop will handle the generic case, drawing for the dealer if the highest total < 17
                 while e.handValue[1] < 17:
                     tmp = self.uberDeck.dealOne()
@@ -180,6 +181,7 @@ class Table:
                     input("Dealer drew: " + tmp.__str__())
                     e.hand.append(tmp)
                     e.calculateHandValue()
+
                 # This second case handles Aces. If an Ace pushes the total over 21, this takes over.
                 if e.handValue[0] < 17 and e.handValue[1] > 21:
                     while e.handValue[0] < 17:
