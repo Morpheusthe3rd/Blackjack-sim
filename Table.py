@@ -6,8 +6,8 @@ import sys
 
 class Table:
 
-    def __init__(self, playerCount):
-        self.uberDeck = Uberdeck.Uberdeck(6) # Blackjack is typically played with 6 decks
+    def __init__(self, playerCount, deckCount):
+        self.uberDeck = Uberdeck.Uberdeck(deckCount) # Blackjack is typically played with 6 decks
         self.playerCount = playerCount
         self.playerList = []
         self.playerList.append(Player.Player()) # The last position on the player list will be the dealer
@@ -216,7 +216,7 @@ if __name__ == "__main__":
 
     sys.argv
     while 1:
-        test = Table(int(sys.argv[1]))
+        test = Table(int(sys.argv[1]), 6)
         test.uberDeck.fullShuffle()
         while len(test.uberDeck.uberDeck) > test.uberDeck.cutPoint:
             test.play()

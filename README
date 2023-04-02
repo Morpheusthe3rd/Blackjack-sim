@@ -4,3 +4,19 @@ count.
 In order to run, please download this zip and un-zip in your location of choice. Next, navigate to the folder location
 in your command-line and run the command: "python Table.py X", where X is the number of players you want!
 
+Once you're in game, the hands will be dealt out. This game assumes a 6 deck shuffle
+They are displayed in the command line as text, and the possible values of those hands will also be displayed.
+The Dealer will only show 1 of their cards until it is their turn.
+
+Next to the card list you will see a pair of numbers.
+These represent the 2 "playable" values your hand can take, accounting for possible aces. The left assumes Ace = 1, and
+the right assumes Ace = 11. In the case that an Ace would push you over 21, it is no longer counted as 11.
+
+Multiplayer operates on a 'hotseat' assumption. When it is a players turn, you will see a prompt, asking if you want to
+stand or hit. Type either 'stand' or 'hit' into the terminal to take an action. These prompts are case-insensitive.
+You can also type 'quit' or 'q' to exit the game, and return to your command line.
+
+Once you draw a card, that card will be listed, and you'll need to press enter to continue.
+
+The game will track if you have 'busted' (gone over 21). In this case, your turn will end, and the next player is up.
+Once all players have either stood or busted, the dealer will automatically process their turn.
