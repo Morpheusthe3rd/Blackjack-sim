@@ -5,6 +5,9 @@ Ahead of time, ensure that your system has at least Python 3.9 installed. If you
 python website: https://www.python.org/downloads/
 This project does not require any external files or modules.
 
+    -I chose to use python3.9 for this project because it has a robust ability to interact with lists, which my
+        design relied on heavily.
+
 In order to run, please download this zip and un-zip in your location of choice. Next, navigate to the folder location
 in your command-line and run the command: "python Table.py X", where X is the number of players you want!
 
