@@ -20,3 +20,11 @@ Once you draw a card, that card will be listed, and you'll need to press enter t
 
 The game will track if you have 'busted' (gone over 21). In this case, your turn will end, and the next player is up.
 Once all players have either stood or busted, the dealer will automatically process their turn.
+
+Once all turns are processed, you will see a wrap-up of the round, with each players end state (their score or bust).
+The Winner of the round will be highlighted.
+
+Follow the next prompt to begin the next round.
+
+Once you have played enough rounds, the deck will need to be re-shuffled. At this point, you will get the option to
+quit, or play more.
