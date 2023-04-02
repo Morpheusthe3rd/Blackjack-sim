@@ -4,18 +4,19 @@ import Uberdeck
 import Player
 import sys
 
+
 class Table:
 
     def __init__(self, playerCount, deckCount):
-        self.uberDeck = Uberdeck.Uberdeck(deckCount) # Blackjack is typically played with 6 decks
-        self.playerCount = playerCount               # Players are unlimited
-        self.playerList = []                         #
-        self.playerList.append(Player.Player())      # The last position on the player list will be the dealer
-        self.winners = [[None, None]]*(self.playerCount+1) # This list is used for tracking victor calculations
-        self.winnerFinal = []                              # This is where the winner is stored
+        self.uberDeck = Uberdeck.Uberdeck(deckCount)  # Blackjack is typically played with 6 decks
+        self.playerCount = playerCount                # Players are unlimited
+        self.playerList = []                          #
+        self.playerList.append(Player.Player())       # The last position on the player list will be the dealer
+        self.winners = [[None, None]]*(self.playerCount+1)  # This list is used for tracking victor calculations
+        self.winnerFinal = []                               # This is where the winner is stored
 
         # populate the player list with Player objects
-        for e in range(0,playerCount):
+        for e in range(0, playerCount):
             self.playerList.append(Player.Player())
 
     # This function reveals all cards of all players, including the dealer
@@ -54,8 +55,8 @@ class Table:
     # This function iterates through the players to calculate and display final scores.
     def checkWinners(self):
 
-        print()  # Newline for CLI cleanliness
-        cycleCount = 1 # This counts the number of cycles the loop goes through, and stands in for Player number.
+        print()         # Newline for CLI cleanliness
+        cycleCount = 1  # This counts the number of cycles the loop goes through, and stands in for Player number.
 
         # This loop determines and prints everyone's playable score, or if they busted.
         for e in self.playerList:               # This operates on all players, including dealer
@@ -89,7 +90,7 @@ class Table:
         NoneType = type(None)   # comparison variable for detecting busted players (which are [None, None])
 
         for i in self.winners:
-            newTestValue = i[0] # for comparison to highestTotal
+            newTestValue = i[0]                     # for comparison to highestTotal
             if type(newTestValue) == NoneType:      # Will pass if current player busted
                 pass
             else:
@@ -141,7 +142,6 @@ class Table:
 
     # This is the main statement, and runs a round of the game.
     def play(self):
-        winners = []
         tmp = self.dealCards()  # This serves to check if there was a natural 21 dealt
         if tmp == 3:
             return
@@ -157,15 +157,15 @@ class Table:
                 # initial checks.
                 while playerinput.lower() != "stand":
 
-                    if playerinput.lower() == "quit" or playerinput.lower() == "q": # exit case
+                    if playerinput.lower() == "quit" or playerinput.lower() == "q":  # exit case
                         print("Quitting game")
                         raise EnvironmentError("Game over")
                     elif e.handValue[0] > 21:           # This statement checks if the current player has gone over 21.
-                        print("You've gone too far this time! You're busted.") # Bust statement
+                        print("You've gone too far this time! You're busted.")  # Bust statement
                         break
 
-                    playerinput = input("Would you like to stand or hit? >> ")  # Any input besides hit goes to the top
-                                                                                # of the next loop.
+                    # Any input besides hit goes to the top of the next loop.
+                    playerinput = input("Would you like to stand or hit? >> ")
                     if playerinput.lower() == "hit":
                         tmp = self.uberDeck.dealOne()           # Draws a card
                         input("You drew: " + tmp.__str__())     # Shows card, requires Enter to progress
@@ -202,6 +202,7 @@ class Table:
         self.checkWinners()
         self.clearHands()
 
+
 if __name__ == "__main__":
 
     while 1:                                    # This loop will handle multiple games
@@ -213,12 +214,11 @@ if __name__ == "__main__":
             test.play()
 
         print("Deck needs to be reshuffled.")
-        input = input("Play again?(y/n) >> ")
+        newInput = input("Play again?(y/n) >> ")
 
         if input == "n":
             print("Quitting game")
             raise EnvironmentError("Game over")
         else:
-            del(test)
+            del test
             pass
-
