@@ -2,6 +2,7 @@ import Deck
 import Card
 import Uberdeck
 import Player
+import sys
 
 class Table:
 
@@ -149,15 +150,17 @@ class Table:
             if e.handValue[0] == 21 or e.handValue[1] == 21:
                 # Flag winner
                 winners.append(cycleCount)
+                break
             cycleCount += 1
 
         # self.printHands()
 
         if winners != []:
+
             self.printHands()
-            print("We have a winner! Player " + cycleCount.__str__())
+
             if cycleCount <= self.playerCount+1:
-                print("Congradulations PLayer: " + winners.__str__())
+                print("Congradulations Player: " + winners.__str__())
             else:
                 print("The Dealer won!")
             self.clearHands()
@@ -210,8 +213,10 @@ class Table:
         self.clearHands()
 
 if __name__ == "__main__":
+
+    sys.argv
     while 1:
-        test = Table(1)
+        test = Table(int(sys.argv[1]))
         test.uberDeck.fullShuffle()
         while len(test.uberDeck.uberDeck) > test.uberDeck.cutPoint:
             test.play()

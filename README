@@ -1,0 +1,6 @@
+Hello and welcome! This simulation of Blackjack operates through the command line, and allows for unlimited player
+count.
+
+In order to run, please download this zip and un-zip in your location of choice. Next, navigate to the folder location
+in your command-line and run the command: "python Table.py X", where X is the number of players you want!
+
